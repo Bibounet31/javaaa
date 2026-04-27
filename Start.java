@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import Rockets.*;
-
+import Capsule.*;
 
 public class Start {
 
@@ -8,13 +8,12 @@ public class Start {
     public static void main(String[] args) {
 
 
-        Launchers l  = new Falcon9();
-        System.out.println(l.getName());
-        System.out.println(l.canCarryHumans());
-        System.out.println(l.getMaxFuel());
-        System.out.println(l.getDescription());
-
-
+        CapsulesMaker c = new Orion();
+        System.out.println(c.getDescription());
+        System.out.println(c.canCarryHumans());
+        System.out.println(c.getMaxPeople());
+        System.out.println(c.getWeight());
+        System.out.println(c.getPrice());
 
 
 
