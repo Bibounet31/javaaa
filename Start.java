@@ -8,34 +8,40 @@ public class Start {
 
     public static void main(String[] args) {
 
+        Rocket rocket = new Rocket(new Falcon9(), new Orion());
+        rocket.addBooster(new BoosterMaker("EAP", 6470, 270, 30));
+
+        System.out.println(rocket.getTotalWeight());
+        System.out.println(rocket.getTotalPrice());
+
 
         //test boosters
-        BoosterMaker eap = new BoosterMaker("EAP", 6470, 270, 30);
-        BoosterMaker srb = new BoosterMaker("SRB", 12500, 590, 55);
-        BoosterMaker be3 = new BoosterMaker("BE-3", 490, 25, 12);
+        //BoosterMaker eap = new BoosterMaker("EAP", 6470, 270, 30);
+        //BoosterMaker srb = new BoosterMaker("SRB", 12500, 590, 55);
+        //BoosterMaker be3 = new BoosterMaker("BE-3", 490, 25, 12);
 
 
         //test capsules
-        CapsulesMaker c = new Orion();
-        System.out.println(c.canCarryHumans());
-        System.out.println(c.getMaxPeople());
-        System.out.println(c.getWeight());
-        System.out.println(c.getPrice());
+        //CapsulesMaker c = new Orion();
+        //System.out.println(c.canCarryHumans());
+        //System.out.println(c.getMaxPeople());
+        //System.out.println(c.getWeight());
+        //System.out.println(c.getPrice());
         //test launcher
-        Launchers l  = new Falcon9();
-        System.out.println(l.getName());
-        System.out.println(l.canCarryHumans());
-        System.out.println(l.getMaxFuel());
+        //Launchers l  = new Falcon9();
+        //System.out.println(l.getName());
+        //System.out.println(l.canCarryHumans());
+        //System.out.println(l.getMaxFuel());
 
 
 
 
 
         Scanner reader = new Scanner(System.in);
-        int rocket = reader.nextInt();
+        int rockets = reader.nextInt();
 
 
-        switch (rocket) {
+        switch (rockets) {
             case 1:
                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 reader.close();
