@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import Rockets.*;
+import Launchers.*;
 import Capsule.*;
 import Booster.*;
 
