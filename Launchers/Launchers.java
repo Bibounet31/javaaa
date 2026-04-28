@@ -1,4 +1,4 @@
-package Rockets;
+package Launchers;
 
 public abstract class Launchers { // name, can carry humans, max boosters max fuel, max payload, priceinmillion.
     private String name;
@@ -25,5 +25,4 @@ public abstract class Launchers { // name, can carry humans, max boosters max fu
     public double getMaxPayloadT() { return maxPayloadT; }
     public double getPriceMillion() { return priceMillion; }
 
-    public abstract String getDescription();
 }
