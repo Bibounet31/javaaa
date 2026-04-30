@@ -21,4 +21,6 @@ public abstract class CapsulesMaker { // Cancarryhumans maxpeople weight price
     public double getWeight() { return weight; }
     public double getPrice() { return price; }
 
+    public abstract String getDescription();
+
 }

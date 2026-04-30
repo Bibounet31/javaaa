@@ -1,9 +1,9 @@
 package Mission;
 import Rocket.*;
 
-public class EarthOrbit extends MissionMaker {
-    public EarthOrbit() {
-        super("Orbite terrestre", false, 400, 1.0);
+public class Custom extends MissionMaker {
+    public Custom() {
+        super("Jupiter", true, 628730000, 0.000008);
     }
 
     @Override

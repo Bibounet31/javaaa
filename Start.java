@@ -2,17 +2,26 @@ import java.util.Scanner;
 import Launchers.*;
 import Capsule.*;
 import Booster.*;
+import Mission.*;
+import Rocket.*;
 
 public class Start {
 
 
     public static void main(String[] args) {
 
-        Rocket rocket = new Rocket(new Falcon9(), new Orion());
-        rocket.addBooster(new BoosterMaker("EAP", 6470, 270, 30));
+        Simulator sim = Simulator.getInstance();
+        sim.start();
+        //Rocket rocket = new Rocket(new Falcon9(), new Orion());
+        //rocket.addBooster(new BoosterMaker("EAP", 6470, 270, 30));
 
-        System.out.println(rocket.getTotalWeight());
-        System.out.println(rocket.getTotalPrice());
+        //MissionMaker mission = new Moon();
+        //System.out.println(mission.getName());
+        //System.out.println(mission.calculateFuel(rocket));
+
+
+        //System.out.println(rocket.getTotalWeight());
+        //System.out.println(rocket.getTotalPrice());
 
 
         //test boosters

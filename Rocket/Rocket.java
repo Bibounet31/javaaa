@@ -1,3 +1,5 @@
+package Rocket;
+
 import Launchers.*;
 import Capsule.*;
 import Booster.*;
@@ -34,4 +36,8 @@ public class Rocket {
         }
         return total;
     }
+
+    public Launchers getLauncher() { return launcher; }
+    public List<BoosterMaker> getBoosters() { return boosters; }
+
 }
