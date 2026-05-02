@@ -12,6 +12,11 @@ public class Start {
 
         Simulator sim = Simulator.getInstance();
         sim.start();
+
+
+
+
+
         //Rocket rocket = new Rocket(new Falcon9(), new Orion());
         //rocket.addBooster(new BoosterMaker("EAP", 6470, 270, 30));
 
@@ -43,23 +48,6 @@ public class Start {
         //System.out.println(l.getMaxFuel());
 
 
-
-
-
-        Scanner reader = new Scanner(System.in);
-        int rockets = reader.nextInt();
-
-
-        switch (rockets) {
-            case 1:
-                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                reader.close();
-                break;
-            case 2:
-                System.out.println("b");
-                reader.close();
-
-        }
 
 
 

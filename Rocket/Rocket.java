@@ -17,10 +17,17 @@ public class Rocket {
         this.boosters = new ArrayList<>();
     }
 
+    // add one booster
     public void addBooster(BoosterMaker booster) {
         boosters.add(booster);
     }
 
+    // add the same booster multiple times
+    public void addBooster(BoosterMaker booster, int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            boosters.add(booster);
+        }
+    }
     public double getTotalWeight() {
         double total = capsule.getWeight();
         for (BoosterMaker b : boosters) {

@@ -1,0 +1,4 @@
+2026-05-02T11:45:21.067564068 | Orbite terrestre | SUCCESS | Cost: 360.0M€
+2026-05-02T11:47:30.750388719 | Orbite terrestre | FAILURE: Payload exceeded | Cost: 0.0M€
+2026-05-02T11:47:37.619215579 | Orbite terrestre | SUCCESS | Cost: 1700.0M€
+2026-05-02T11:47:57.496442192 | Jupiter | FAILURE: Payload exceeded | Cost: 0.0M€

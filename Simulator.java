@@ -7,78 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
-
-
 public class Simulator {
-    public void start() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("=== SPACE LAUNCH SIMULATOR ===");
-        System.out.println("\nAvailable launchers:");
-
-        for (int i = 0; i < launchers.size(); i++) {
-            System.out.println((i + 1) + ". " + launchers.get(i).getName());
-        }
-
-        System.out.print("\nChoose a launcher: ");
-        int choice = scanner.nextInt();
-        Launchers chosenLauncher = launchers.get(choice - 1);
-        System.out.println("You chose: " + chosenLauncher.getName());
-//capsules
-        System.out.println("\nAvailable capsules:");
-        for (int i = 0; i < capsules.size(); i++) {
-            System.out.println((i + 1) + ". " + capsules.get(i).getDescription());
-        }
-        System.out.print("\nChoose a capsule: ");
-        int capsuleChoice = scanner.nextInt();
-        CapsulesMaker chosenCapsule = capsules.get(capsuleChoice - 1);
-        System.out.println("You chose: " + chosenCapsule.getDescription());
-// boosters
-        Rocket rocket = new Rocket(chosenLauncher, chosenCapsule);
-
-        System.out.println("\nAvailable boosters:");
-        for (int i = 0; i < boosters.size(); i++) {
-            System.out.println((i + 1) + ". " + boosters.get(i).getName());
-        }
-        System.out.println("0. No booster");
-
-        System.out.print("\nChoose a booster (0 to stop): ");
-        int boosterChoice = scanner.nextInt();
-        while (boosterChoice != 0) {
-            rocket.addBooster(boosters.get(boosterChoice - 1));
-            System.out.println("Booster added!");
-            System.out.print("Add another booster (0 to stop): ");
-            boosterChoice = scanner.nextInt();
-        }
-        // missions
-        System.out.println("\nAvailable missions:");
-        for (int i = 0; i < missions.size(); i++) {
-            System.out.println((i + 1) + ". " + missions.get(i).getName());
-        }
-        System.out.print("\nChoose a mission: ");
-        int missionChoice = scanner.nextInt();
-        MissionMaker chosenMission = missions.get(missionChoice - 1);
-        System.out.println("You chose: " + chosenMission.getName());
-        simulate(rocket, chosenMission);
-    }
-
-
     private static Simulator instance;
 
     private List<Launchers> launchers;
     private List<CapsulesMaker> capsules;
     private List<BoosterMaker> boosters;
     private List<MissionMaker> missions;
+    private List<Launch> history;
 
     private Simulator() {
-        // initialize catalogues
         launchers = new ArrayList<>();
         capsules = new ArrayList<>();
         boosters = new ArrayList<>();
         missions = new ArrayList<>();
+        history = new ArrayList<>();
 
-        // fill catalogues
         launchers.add(new Falcon9());
         launchers.add(new SaturnV());
         launchers.add(new Ariane5());
@@ -98,6 +42,15 @@ public class Simulator {
         missions.add(new Moon());
         missions.add(new Mars());
         missions.add(new Custom());
+
+        // load history at startup
+        List<String> savedHistory = HistoryManager.load();
+        if (!savedHistory.isEmpty()) {
+            System.out.println("\n=== PREVIOUS LAUNCHES ===");
+            for (String line : savedHistory) {
+                System.out.println(line);
+            }
+        }
     }
 
     public static Simulator getInstance() {
@@ -107,11 +60,73 @@ public class Simulator {
         return instance;
     }
 
-    public void simulate(Rocket rocket, MissionMaker mission) {
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("=== SPACE LAUNCH SIMULATOR ===");
+        System.out.println("\nAvailable launchers:");
+        for (int i = 0; i < launchers.size(); i++) {
+            System.out.println((i + 1) + ". " + launchers.get(i).getName());
+        }
+        System.out.print("\nChoose a launcher: ");
+        int choice = scanner.nextInt();
+        Launchers chosenLauncher = launchers.get(choice - 1);
+        System.out.println("You chose: " + chosenLauncher.getName());
+
+        System.out.println("\nAvailable capsules:");
+        for (int i = 0; i < capsules.size(); i++) {
+            System.out.println((i + 1) + ". " + capsules.get(i).getDescription());
+        }
+        System.out.print("\nChoose a capsule: ");
+        int capsuleChoice = scanner.nextInt();
+        CapsulesMaker chosenCapsule = capsules.get(capsuleChoice - 1);
+        System.out.println("You chose: " + chosenCapsule.getDescription());
+
+        Rocket rocket = new Rocket(chosenLauncher, chosenCapsule);
+
+        System.out.println("\nAvailable boosters:");
+        for (int i = 0; i < boosters.size(); i++) {
+            System.out.println((i + 1) + ". " + boosters.get(i).getName());
+        }
+        System.out.println("0. No booster");
+        System.out.print("\nChoose a booster (0 to stop): ");
+        int boosterChoice = scanner.nextInt();
+        while (boosterChoice != 0) {
+            rocket.addBooster(boosters.get(boosterChoice - 1));
+            System.out.println("Booster added!");
+            System.out.print("Add another booster (0 to stop): ");
+            boosterChoice = scanner.nextInt();
+        }
+
+        System.out.println("\nAvailable missions:");
+        for (int i = 0; i < missions.size(); i++) {
+            System.out.println((i + 1) + ". " + missions.get(i).getName());
+        }
+        System.out.print("\nChoose a mission: ");
+        int missionChoice = scanner.nextInt();
+        MissionMaker chosenMission = missions.get(missionChoice - 1);
+        System.out.println("You chose: " + chosenMission.getName());
+
+        try {
+            simulate(rocket, chosenMission);
+        } catch (InsufficientFuelException e) {
+            System.out.println("FAILURE: " + e.getMessage());
+            Launch launch = new Launch(rocket, chosenMission, false, e.getMessage(), 0);
+            history.add(launch);
+            HistoryManager.save(launch);
+        }
+
+        showHistory();
+    }
+
+    public void simulate(Rocket rocket, MissionMaker mission) throws InsufficientFuelException {
         System.out.println("\n=== LAUNCHING ===");
 
         // 1. check crew compatibility
         if (mission.requiresCrew() && !rocket.getLauncher().canCarryHumans()) {
+            Launch launch = new Launch(rocket, mission, false, "Launcher cannot carry crew", 0);
+            history.add(launch);
+            HistoryManager.save(launch);
             System.out.println("FAILURE: Launcher cannot carry crew");
             return;
         }
@@ -119,18 +134,23 @@ public class Simulator {
         // 2. check fuel
         double fuelNeeded = mission.calculateFuel(rocket);
         if (fuelNeeded > rocket.getLauncher().getMaxFuel()) {
-            System.out.println("FAILURE: Insufficient fuel capacity");
-            return;
+            throw new InsufficientFuelException(fuelNeeded, rocket.getLauncher().getMaxFuel());
         }
 
         // 3. check payload
         if (rocket.getTotalWeight() > rocket.getLauncher().getMaxPayloadT()) {
+            Launch launch = new Launch(rocket, mission, false, "Payload exceeded", 0);
+            history.add(launch);
+            HistoryManager.save(launch);
             System.out.println("FAILURE: Payload exceeded");
             return;
         }
 
         // 4. check boosters
         if (rocket.getBoosters().size() > rocket.getLauncher().getMaxBoosters()) {
+            Launch launch = new Launch(rocket, mission, false, "Too many boosters", 0);
+            history.add(launch);
+            HistoryManager.save(launch);
             System.out.println("FAILURE: Too many boosters");
             return;
         }
@@ -138,15 +158,30 @@ public class Simulator {
         // 5. random failure
         double random = Math.random();
         if (random < 0.05) {
+            Launch launch = new Launch(rocket, mission, false, "Unexpected technical anomaly", 0);
+            history.add(launch);
+            HistoryManager.save(launch);
             System.out.println("FAILURE: Unexpected technical anomaly");
             return;
         }
 
+        double totalCost = rocket.getTotalPrice();
+        Launch launch = new Launch(rocket, mission, true, "Success", totalCost);
+        history.add(launch);
+        HistoryManager.save(launch);
         System.out.println("SUCCESS! Mission " + mission.getName() + " completed!");
         System.out.println("Fuel used: " + fuelNeeded + "t");
+        System.out.println("Total cost: " + totalCost + "M€");
     }
 
-
-
-
+    public void showHistory() {
+        System.out.println("\n=== LAUNCH HISTORY ===");
+        if (history.isEmpty()) {
+            System.out.println("No launches yet.");
+            return;
+        }
+        for (Launch l : history) {
+            System.out.println(l.toString());
+        }
+    }
 }
