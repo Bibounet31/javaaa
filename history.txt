@@ -2,3 +2,4 @@
 2026-05-02T11:47:30.750388719 | Orbite terrestre | FAILURE: Payload exceeded | Cost: 0.0M€
 2026-05-02T11:47:37.619215579 | Orbite terrestre | SUCCESS | Cost: 1700.0M€
 2026-05-02T11:47:57.496442192 | Jupiter | FAILURE: Payload exceeded | Cost: 0.0M€
+2026-05-04T13:41:30.585941919 | Jupiter | FAILURE: Insufficient fuel: needed 3027.96368t but max capacity is 2700.0t | Cost: 0.0M€

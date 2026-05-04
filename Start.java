@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import Launchers.*;
 import Capsule.*;
 import Booster.*;

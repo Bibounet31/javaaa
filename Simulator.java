@@ -43,6 +43,8 @@ public class Simulator {
         missions.add(new Mars());
         missions.add(new Custom());
 
+
+
         // load history at startup
         List<String> savedHistory = HistoryManager.load();
         if (!savedHistory.isEmpty()) {
@@ -53,6 +55,10 @@ public class Simulator {
         }
     }
 
+
+
+
+
     public static Simulator getInstance() {
         if (instance == null) {
             instance = new Simulator();
@@ -62,35 +68,62 @@ public class Simulator {
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
-
+        //launchers
         System.out.println("=== SPACE LAUNCH SIMULATOR ===");
         System.out.println("\nAvailable launchers:");
+
+
         for (int i = 0; i < launchers.size(); i++) {
-            System.out.println((i + 1) + ". " + launchers.get(i).getName());
+            System.out.println((i + 1) + ". " + launchers.get(i).getName());  // list all available launchers
         }
+
         System.out.print("\nChoose a launcher: ");
+
         int choice = scanner.nextInt();
-        Launchers chosenLauncher = launchers.get(choice - 1);
+        while (choice < 1 || choice > launchers.size()) {       //check if inserted value is in range
+            System.out.print("choix invalide!");
+            choice = scanner.nextInt();
+        }
+
+        Launchers chosenLauncher = launchers.get(choice - 1);           //get chosen launcher
         System.out.println("You chose: " + chosenLauncher.getName());
 
+
+
+
+
+        //capsules
         System.out.println("\nAvailable capsules:");
         for (int i = 0; i < capsules.size(); i++) {
-            System.out.println((i + 1) + ". " + capsules.get(i).getDescription());
+            System.out.println((i + 1) + ". " + capsules.get(i).getDescription());      //show all availables capsules
         }
         System.out.print("\nChoose a capsule: ");
+
         int capsuleChoice = scanner.nextInt();
+        while (capsuleChoice < 1 || capsuleChoice > capsules.size()) {     //check if inserted value is in range
+            System.out.print("choix invalide!");
+            capsuleChoice = scanner.nextInt();
+        }
+
         CapsulesMaker chosenCapsule = capsules.get(capsuleChoice - 1);
-        System.out.println("You chose: " + chosenCapsule.getDescription());
+        System.out.println("You chose: " + chosenCapsule.getDescription()); //show selected capsule
 
-        Rocket rocket = new Rocket(chosenLauncher, chosenCapsule);
+        Rocket rocket = new Rocket(chosenLauncher, chosenCapsule);      // init rocket with chosed launcher and capsule
 
+        //booster
         System.out.println("\nAvailable boosters:");
         for (int i = 0; i < boosters.size(); i++) {
-            System.out.println((i + 1) + ". " + boosters.get(i).getName());
+            System.out.println((i + 1) + ". " + boosters.get(i).getName());     //show available booteers
         }
         System.out.println("0. No booster");
+
         System.out.print("\nChoose a booster (0 to stop): ");
-        int boosterChoice = scanner.nextInt();
+        int boosterChoice = scanner.nextInt();      //ask
+        while (boosterChoice < 1 || boosterChoice > boosters.size()) {     //check if inserted value is in range
+            System.out.print("choix invalide!");
+            boosterChoice = scanner.nextInt();
+        }
+
         while (boosterChoice != 0) {
             rocket.addBooster(boosters.get(boosterChoice - 1));
             System.out.println("Booster added!");
@@ -98,15 +131,23 @@ public class Simulator {
             boosterChoice = scanner.nextInt();
         }
 
+
+
+        //missions
         System.out.println("\nAvailable missions:");
         for (int i = 0; i < missions.size(); i++) {
-            System.out.println((i + 1) + ". " + missions.get(i).getName());
+            System.out.println((i + 1) + ". " + missions.get(i).getName());     //show available missions
         }
+
         System.out.print("\nChoose a mission: ");
+
+
         int missionChoice = scanner.nextInt();
-        MissionMaker chosenMission = missions.get(missionChoice - 1);
+        MissionMaker chosenMission = missions.get(missionChoice - 1);       //tell mission maker which mission useer chosed
         System.out.println("You chose: " + chosenMission.getName());
 
+
+        //MISSIONNNN
         try {
             simulate(rocket, chosenMission);
         } catch (InsufficientFuelException e) {
