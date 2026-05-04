@@ -152,7 +152,7 @@ public class Simulator {
             simulate(rocket, chosenMission);
         } catch (InsufficientFuelException e) {
             System.out.println("FAILURE: " + e.getMessage());
-            Launch launch = new Launch(rocket, chosenMission, false, e.getMessage(), 0);
+            Launch launch = new Launch(rocket, chosenMission, false, e.getMessage(), 0);  //make history line
             history.add(launch);
             HistoryManager.save(launch);
         }
