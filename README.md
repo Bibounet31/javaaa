@@ -77,3 +77,6 @@ La mission personnelle est **Jupiter**, accessible via le choix 5 dans le menu.
 | Singleton | `Simulator.getInstance()` |
 | Fichier | `HistoryManager` lit/écrit `history.txt` |
 
+## UML
+
+<img width="804" height="666" alt="image" src="https://github.com/user-attachments/assets/cb3a7942-cee2-482b-bd8b-70cd2817dd4b" />
