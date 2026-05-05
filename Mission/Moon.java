@@ -3,7 +3,7 @@ import Rocket.*;
 
 public class Moon extends MissionMaker {
     public Moon() {
-        super("Lune", true, 400000, 0.005);
+        super("Moon", true, 400000, 0.005);
     }
 
     @Override

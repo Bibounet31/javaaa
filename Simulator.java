@@ -119,7 +119,7 @@ public class Simulator {
 
         System.out.print("\nChoose a booster (0 to stop): ");
         int boosterChoice = scanner.nextInt();      //ask
-        while (boosterChoice < 1 || boosterChoice > boosters.size()) {     //check if inserted value is in range
+        while (boosterChoice < 0 || boosterChoice > boosters.size()) {     //check if inserted value is in range
             System.out.print("choix invalide!");
             boosterChoice = scanner.nextInt();
         }
